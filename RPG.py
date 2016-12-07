@@ -25,7 +25,7 @@ The footsteps continue walking until you can no longer hear them.'"""
 
 #Locations
 closet = game.new_location("Closet {n}","""You are in a dark closet with a
-locked door in front of you. If you feel around you notice that there are some
+locked door in front of you. You feel a draft from behind you. If you feel around you notice that there are some
 random objects on the floor.""")
 foyer = game.new_location("Foyer {n, e, w, s}","""You find yourself in a grand
 foyer with doors leading in all directions.""")
@@ -42,7 +42,7 @@ there appears to be something spooky about the single wooden chair that sits
 against the wall.""")
 exit = game.new_location("Strange Door {n, s}", """You are at the end of the South
 Hallway and a locked door prevents you from moving onwards.""")
-bd1 = game.new_location("Bedroom {east,down}", """You find yourself in an
+bd1 = game.new_location("Bedroom {n,e,down}", """You find yourself in an
 elegant bedroom with a large bed and a desk.""")
 kitchen = game.new_location("Kitchen {w}","""You go east from the East Hallway
 to find yourself in a kitchen stocked with an assortment of ustensils and food""")
@@ -66,8 +66,8 @@ game.new_connection("Doorway", eh, kitchen, [EAST], [WEST])
 game.new_connection("Doorway", wh, bd1, [WEST], [EAST])
 game.new_connection("Staircase", bd1, b1, [DOWN], [UP])
 game.new_connection("Doorway", bd1, closet, [NORTH])
-game.new_connection("Doorway", b1, b2, [WEST, EAST])
-game.new_connection("Doorway", b2, dungeon, [WEST, EAST])
+game.new_connection("Doorway", b1, b2, [WEST], [EAST])
+game.new_connection("Doorway", b2, dungeon, [WEST], [EAST])
 
 
 #Objects
@@ -141,7 +141,7 @@ of friendship he hands you the Battery Tazer and vanishes into thin air.""")
 button and paperclips attached to it, it looks very important""")
                     return
                 if player_choice2 == "kill":
-                    game.output("""The skeleton has dodge you attack and cleaved
+                    game.output("""The skeleton has dodged your attack and cleaved
 in half.""")
                     print "You have died"
                     player.terminate()
@@ -210,8 +210,8 @@ and stabbed you in the back (literally).""")
                     player.terminate()
                     return
                 if player_decision == "kill":
-                    game.output("""You have slain Mr. Mayer, now take the keyand
-                    gain your freedom!""")
+                    game.output("""You have slain Mr. Mayer, now take the key 
+and gain your freedom!""")
                     salty_key = bd1.new_object("salty key", """A strangely
 salty and slimy key taken out of the dead hands of Mayer""")
                     return
