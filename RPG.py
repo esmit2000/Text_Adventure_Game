@@ -25,7 +25,7 @@ The footsteps continue walking until you can no longer hear them.'"""
 
 #Locations
 closet = game.new_location("Closet {n}","""You are in a dark closet with a
-locked door in front of you. You feel a draft from behind you. If you feel around you notice that there are some
+locked door in front of you. There is a draft coming from behind you. If you feel around you notice that there are some
 random objects on the floor.""")
 foyer = game.new_location("Foyer {n, e, w, s}","""You find yourself in a grand
 foyer with doors leading in all directions.""")
@@ -94,6 +94,10 @@ mr_mayer = Animal("Mayer")
 mr_mayer.set_location(bd1)
 mr_mayer.set_allowed_locations([bd1])
 game.add_actor(mr_mayer)
+evil_chair = Animal("Evil Chair")
+evil_chair.set_location(d1)
+evil_chair.set_allowed_locations([d1])
+game.add_actor(evil_chair)
 
 #Commands
 def kill_creepy_voice(game, thing):
@@ -190,7 +194,7 @@ your lacking of proper weapons.""")
             return
 
 def kill_mr_mayer(game, thing):
-        if "mayer slayer" in game.player.inventory:
+        if "mayer slayer" and "mayer's bane" in game.player.inventory:
             print "Mr. Mayer attacked, do you dodge or fight back?"
             player_choice = raw_input("Dodge or Attack?")
             if player_choice == "dodge":
@@ -210,13 +214,50 @@ and stabbed you in the back (literally).""")
                     player.terminate()
                     return
                 if player_decision == "kill":
-                    game.output("""You have slain Mr. Mayer, now take the key 
+                    game.output("""You have slain Mr. Mayer, now take the key
 and gain your freedom!""")
                     salty_key = bd1.new_object("salty key", """A strangely
 salty and slimy key taken out of the dead hands of Mayer""")
                     return
 
-        if not "mayer slayer" in game.player.inventory:
+        if not "mayer slayer" and "mayer's bane" in game.player.inventory:
+            game.output("""You fought valiantly but were ultimately defeated due to
+your lacking of proper weapons.""")
+            player.terminate()
+            print "You have died"
+            return
+
+def evil_chair(game, thing):
+        if "wrench" in game.player.inventory:
+            game.output("""The Evil Chair is charging towards you, do you
+Sidestep it or Bash it over the... seat... with your wrench?""")
+            player_choice = raw_input("sidestep or bash?")
+            if player_choice == "bash":
+                game.output("""The Evil Chair was knocked over and is struggling
+to get up, do you loosen its bolts or run for your life?""")
+                player_choice2 = raw_input("loosen or run?")
+                if player_choice2 == "loosen":
+                    game.output("""Your loosening has caused the chair to fall
+apart, leaving behind a pendant shaped like rice pudding labeled 'Mayer's bane'""")
+                    evil_chair.terminate()
+                    mayers_bane = d1.new_object("mayer's bane","""A pendant
+shaped like a bowl of rice pudding that is apparently part of the key to killing
+Mayer.""")
+                    return
+                if player_choice2 == "bash":
+                    game.output("""The chair opened its previously hidden mouth
+and swallowed you whole.""")
+                    print "You have died"
+                    player.terminate()
+                    return
+            if player_choice == "sidestep":
+                    game.output("""You ineffectively sidestepped, allowing the
+Evil Chair to eat your whole.""")
+                    print "You have died"
+                    player.terminate()
+                    return
+
+        if not "wrench" in game.player.inventory:
             game.output("""You fought valiantly but were ultimately defeated due to
 your lacking of proper weapons.""")
             player.terminate()
