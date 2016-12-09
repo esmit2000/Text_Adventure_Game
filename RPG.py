@@ -5,6 +5,7 @@
 from time import sleep
 import random
 from adven import *
+#from default import *
 
 game = Game("Closet of Doom")
 #Opening Dialogue
@@ -98,6 +99,10 @@ evil_chair = Animal("Evil Chair")
 evil_chair.set_location(d1)
 evil_chair.set_allowed_locations([d1])
 game.add_actor(evil_chair)
+oracle = Animal("Oracle")
+oracle.set_location(foyer)
+oracle.set_allowed_locations([foyer, wh, sh, eh, nh, d1, kitchen, bd1, exit])
+game.add_actor(oracle)
 
 #Commands
 def kill_creepy_voice(game, thing):
@@ -277,12 +282,41 @@ monsters. Thank you for playing""")
 door""")
             return
 
+def help(game, thing):
+    if not "bone saw" in game.player.inventory:
+        print "Find the bone saw."
+        return
+    if "bone saw" and not "battery tazer" in game.player.inventory:
+        print "You must kill the Skeleton and find the battery tazer"
+        return
+    if "battery tazer" and not "magic spoon" in game.player.inventory:
+        print "You must find and conquer the Creepy Voice"
+        return
+    if "bone saw" and not "wrench" in game.player.inventory:
+        print "You must find the wrench"
+        return
+    if "wrench" and not "mayer's bane" in game.player.inventory:
+        print "You vanquish the Evil Chair"
+        return
+    if "magic spoon" and not "mayer slayer" in game.player.inventory:
+        print """You must bring the Rice Pudding Monster to its knees (or
+uhhh... goop?)."""
+        return
+    if "mayer slayer" and "mayer's bane" in game.player.inventory:
+        print """you have all you need, now bring down the Tyrant, Mayer, who
+is holding you hostage!"""
+        return
+    if "salty key" in game.player.inventory:
+        print "You may now leave the house! Make a run for the door!"
+
+
 #outside.add_phrase("victory", victory)
 creepy_voice.add_phrase("fight creepy voice", kill_creepy_voice)
 skeleton.add_phrase("fight skeleton", kill_skeleton)
 rice_pudding_monster.add_phrase("fight rice pudding monster", kill_rice_pudding_monster)
 mr_mayer.add_phrase("fight mayer", kill_mr_mayer)
 exit.add_phrase("open strange door", open_strange_door)
+oracle.add_phrase("help", help)
 
 player = game.new_player(closet)
 foyer.make_requirement(stuffed_tortoise)
